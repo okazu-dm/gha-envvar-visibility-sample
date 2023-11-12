@@ -20,8 +20,7 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: '18.x'
-      - run: npm install @actions/core
-
+      - run: npm install
       # compositeだと1つしか見えない
       - name: run local show-env-composite action
         uses: ./show-env-composite
