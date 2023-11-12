@@ -1,4 +1,4 @@
 FROM busybox:latest
 
-ADD entrypoint.sh /entrypoint.sh
+COPY entrypoint.sh /
 ENTRYPOINT ["/entrypoint.sh"]
