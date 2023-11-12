@@ -20,6 +20,7 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: '18.x'
+      - run: npm install @actions/core
 
       # compositeだと1つしか見えない
       - name: run local show-env-composite action
@@ -50,7 +51,8 @@ jobs:
               }
             })
           "
-      - name: Display env with node(github toolkit)
+      # toolkitを使うかどうかは関係なかった
+      - name: Display env with node(gha toolkit)
         run: |
           node index.js
       - run: ls -la ./
@@ -66,8 +68,3 @@ jobs:
       # github-scriptのあとに実行しても1つしか見えない
       - name: Display env
         run: env | sort | grep -e '^ACTIONS_'
-
-  # call:
-  #   uses: ./.github/workflows/callee.yml
-  #   with:
-  #     github-token: ${{ github.token }}
