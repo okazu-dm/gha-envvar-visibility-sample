@@ -20,7 +20,6 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: '18.x'
-      - run: 'npm install'
 
       # compositeだと1つしか見えない
       - name: run local show-env-composite action
@@ -35,14 +34,13 @@ jobs:
         uses: okazu-dm/github_actions_envvar_test/show-env-docker@main
 
 
-
-      # ローカル参照でもnodeだと5つ見える
+      # nodeだと5つ見える
       - name: run local show-env-node action
         uses: ./show-env-node
       - name: run remote show-env-node action 
         uses: okazu-dm/github_actions_envvar_test/show-env-node@main
 
-        # これも１つしか見えない
+      # run stepだとnodeを使っていても1つしか見えない
       - name: Display env with node
         run: |
           node -e "
