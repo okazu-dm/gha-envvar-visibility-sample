@@ -11,6 +11,10 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - uses: docker/setup-buildx-action@v3
+      - name: Display env
+        run: env | sort | grep -e '^ACTIONS_'
       # この書き方ではキャッシュは利用できない
       - name: docker build
         run: docker buildx build --cache-to=type=gha,mode=max --cache-from=type=gha .
+      - name: Display env
+        run: env | sort | grep -e '^ACTIONS_'
