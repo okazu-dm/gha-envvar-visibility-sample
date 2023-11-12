@@ -14,7 +14,7 @@ jobs:
       - name: Display env
         run: env | sort | grep -e '^ACTIONS_'
       - name: expose environemnt variables
-        uses: ./show-env-docker
+        uses: ./export-env-docker
       - name: Display env
         run: env | sort | grep -e '^ACTIONS_'
       # キャッシュをロードするはず
