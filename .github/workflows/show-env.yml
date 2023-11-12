@@ -1,0 +1,75 @@
+# This is a basic workflow to help you get started with Actions
+
+name: CI
+
+on:
+  push:
+    branches: [ "main" ]
+  workflow_dispatch:
+
+
+jobs:
+  show:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      # この時点では見える環境変数は1つ
+      # ACTIONS_RUNNER_ACTION_ARCHIVE_CACHE=/opt/actionarchivecache 
+      - name: Display env
+        run: env | sort | grep -e '^ACTIONS_'
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '18.x'
+      - run: 'npm install'
+
+      # compositeだと1つしか見えない
+      - name: run local show-env-composite action
+        uses: ./show-env-composite
+      - name: run remote show-env-composite action 
+        uses: okazu-dm/github_actions_envvar_test/show-env-composite@main
+
+      # docker typeでは4つ見える
+      - name: run local show-env-docker action
+        uses: ./show-env-docker
+      - name: run remote show-env-docker action 
+        uses: okazu-dm/github_actions_envvar_test/show-env-docker@main
+
+
+
+      # ローカル参照でもnodeだと5つ見える
+      - name: run local show-env-node action
+        uses: ./show-env-node
+      - name: run remote show-env-node action 
+        uses: okazu-dm/github_actions_envvar_test/show-env-node@main
+
+        # これも１つしか見えない
+      - name: Display env with node
+        run: |
+          node -e "
+            Object.keys(process.env).forEach(key => {
+              if (key.startsWith('ACTIONS_')) {
+                console.log(\`\${key}: \${process.env[key]}\`)
+              }
+            })
+          "
+      - name: Display env with node(github toolkit)
+        run: |
+          node index.js
+      - run: ls -la ./
+      # これも1つだけ見える
+      - uses: actions/github-script@v6
+        with:
+          script: |
+            Object.keys(process.env).forEach(key => {
+              if (key.startsWith('ACTIONS_')) {
+                console.log(`${key}: ${process.env[key]}`)
+              }
+            })
+      # github-scriptのあとに実行しても1つしか見えない
+      - name: Display env
+        run: env | sort | grep -e '^ACTIONS_'
+
+  # call:
+  #   uses: ./.github/workflows/callee.yml
+  #   with:
+  #     github-token: ${{ github.token }}

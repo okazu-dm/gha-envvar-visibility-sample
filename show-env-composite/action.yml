@@ -1,0 +1,12 @@
+name: show env(action)
+description: show environment variables
+author: 'okazu-dm'
+branding:
+  color: 'red'
+  icon: 'eye'
+  
+runs:
+  using: "composite"
+  steps:
+    - run: node plain.js
+      shell: bash
