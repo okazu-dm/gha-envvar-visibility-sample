@@ -1,5 +1,5 @@
-name: show env(action)
-description: show environment variables
+name: export env(action)
+description: export environment variables
 author: 'okazu-dm'
 branding:
   color: 'red'
