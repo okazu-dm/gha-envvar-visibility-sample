@@ -1,0 +1,20 @@
+name: docker build
+
+on:
+  push:
+    branches: [ "master" ]
+  workflow_dispatch:
+
+jobs:
+  show:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: docker/setup-buildx-action@v3
+
+      - name: expose environemnt variables
+        uses: ./show-env-docker
+
+      # キャッシュをロードするはず
+      - name: fast docker build with cache
+        run: docker buildx build --cache-to=type=gha,mode=max --cache-from=type=gha .
